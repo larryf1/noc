@@ -1,13 +1,13 @@
 # AI NOC
 
-This goal of this application is to generate almost all of the actual code with AI.
+This goal of this application is to generate almost all the actual code with AI.
 
-The goal is to begin to develop a replacement for an existing application
-but it is fraught with security challenges, and doesn't provide the level
+The goal is to begin to develop a replacement for an existing application, 
+but it is fraught with security challenges and doesn't provide the level
 of partner isolation that is required.
 
-The user of the application can either be logged in, or not. If the user is not logged in,
-then display a login page (eventually to be replaced by a SSO solution).
+The user of the application can either be logged in or not. If the user is not logged in,
+then display a login page (eventually to be replaced by an SSO solution).
 
 If the user is not logged in, then show the login screen described below.
 Once the user is successfully logged in, then display a search page.
@@ -24,7 +24,7 @@ The application should be designed with the following principles in mind:
 - **Usability**: The application should be easy to use and navigate, with clear error messages and validation.
 - **Performance**: The application should be designed for performance, with fast load times and minimal latency.
 - **Scalability**: The application should be designed to scale, with the ability to handle large amounts of data and users.
-- **Maintainability**: The application should be designed to be maintainable, with clear code structure and documentation.
+- **Maintainability**: The application should be designed to be maintainable, with a clear code structure and documentation.
 - **Testability**: The application should be designed to be testable, with unit tests and integration tests.
 - **Extensibility**: The application should be designed to be extensible, with the ability to add new features and functionality in the future.
 
@@ -32,7 +32,7 @@ The overall look and feel of the application can be built with Bootstrap or Mate
 
 There should be a small header with the name of the application, and a footer with the version number. The header should be fixed to the top of the page, 
 and the footer should be fixed to the bottom of the page.
-The header and footer are 2-3 times as tall as they need to be. At the top, make sure it doesn't obstruct the 
+The header and footer are 2–3 times as tall as they need to be. At the top, make sure it doesn't obstruct the 
 top of the page.
 
 Below the header, there should be a main content area that will display the login page or the search page, depending on whether the user is logged in or not.
@@ -46,7 +46,7 @@ Once the user is logged in, there should be a logout button in the header that a
 The login page should have the following fields:
 - **Username**
     - Required field.
-    - Must be alphanumeric and between 3-20 characters.
+    - Must be alphanumeric and between 3–20 characters.
     - Indicate on the UI that this is a required field
     
 - **PartnerIds**
@@ -62,21 +62,21 @@ The login page should have the following fields:
 - **Roles**
     - support - basic read access to all areas
     - admin - read/write access to all areas
-    - super admin - read/write access to all areas, and the ability to add new users
-    - tester - read/write to all areas based on device selected
+    - super admin - read/write access to all areas and the ability to add new users
+    - tester - read/write to all areas based on the device selected
     - Required field.
     - Only allow one role to be selected at a time
     - Implement as a dropdown or single-select box.
     - The default value should be "support" for the initial implementation.
 
-These can be hardcoded pick lists for now. Eventually, we will plan to replace
+These can be hardcoded pick lists for now. Eventually, we will plan to replace it
 with a call to an SSO authority which will provide the partner(s) and roles assigned to the user. 
 During the initial implementation, this can be a simple hardcoded list of users and their roles.
 
 The login page should also have:
-- A button to "login".
+- A button to "login."
 - Basic validation for required fields (e.g., username, partner id, and role must be selected).
-- Display error messages for invalid inputs (e.g., "Username is required", "Invalid partner ID").
+- Display error messages for invalid inputs (e.g., "Username is required," "Invalid partner ID").
 
 When the login button is clicked, the application should:
 1. Validate the input fields.
@@ -90,7 +90,7 @@ When the login button is clicked, the application should:
 The search page should have:
 - A search box.
     - Supports type-ahead functionality to display possible results as the user types.
-    - Minimum 3 characters required to trigger type-ahead suggestions.
+    - A minimum of three characters is required to trigger type-ahead suggestions.
 - A button to submit the search.
 
 The user needs to be able to search for the following:
@@ -100,7 +100,7 @@ The user needs to be able to search for the following:
 
 The search functionality should include:
 - Type-ahead search to display possible results as the user types.
-- Search results limited based on the following:
+- Search results are limited based on the following:
     - **Partner IDs**: A search should only return possible results for one of the partner ids from the user login page.
     - **Roles**: For example, testers have elevated access to all test accounts, but not production accounts.
 
