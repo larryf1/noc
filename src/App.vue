@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <h1>AI NOC</h1>
-      <div id="user-dropdown" v-if="isLoggedIn">
+      <div id="user-dropdown" v-if="isLoggedIn" style="margin-right: 100px;">
         <span id="logged-in-user">Logged in as: {{ username }}</span>
         <select id="user-details-dropdown">
           <option :value="`Partner ID: ${partnerId}`">Partner ID: {{ partnerId }}</option>
@@ -70,12 +70,12 @@ header {
   top: 0;
   width: 100%;
   z-index: 1000;
-  height: 50px;
+  height: 35px;
 }
 
 main {
   flex: 1;
-  padding: 70px 20px 20px;
+  padding: 55px 20px 35px;
   overflow-y: auto;
 }
 
@@ -87,6 +87,6 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 40px;
+  height: 25px;
 }
 </style>
