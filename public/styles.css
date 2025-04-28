@@ -16,9 +16,9 @@ header {
   align-items: center;
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 99%;
   z-index: 1000;
-  height: 50px; /* Explicitly set a smaller height */
+  height: 30px; /* Explicitly set a smaller height */
 }
 
 main {
@@ -35,7 +35,7 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 40px; /* Explicitly set a smaller height */
+  height: 25px; /* Explicitly set a smaller height */
 }
 
 #user-dropdown {
