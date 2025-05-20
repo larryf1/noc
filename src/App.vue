@@ -14,7 +14,7 @@
 
     <main>
       <LoginPage v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
-      <SearchPage v-else />
+      <SearchPage v-else :logged-in-partner-id="partnerId" />
     </main>
 
     <footer>
@@ -70,12 +70,12 @@ header {
   top: 0;
   width: 100%;
   z-index: 1000;
-  height: 50px;
+  height: 35px;
 }
 
 main {
   flex: 1;
-  padding: 70px 20px 20px;
+  padding: 45px 20px 20px;
   overflow-y: auto;
 }
 
@@ -87,7 +87,7 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 40px;
-  font-size: 12px; /* Added to make the font size smaller */
+  height: 25px;
+  font-size: 10px; /* Added to make the font size smaller */
 }
 </style>

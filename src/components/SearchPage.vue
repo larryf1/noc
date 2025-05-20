@@ -18,6 +18,12 @@
 <script>
 export default {
   name: 'SearchPage',
+  props: {
+    loggedInPartnerId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       query: '',
@@ -32,14 +38,28 @@ export default {
         return;
       }
       const mockResults = [
-        { type: 'Mac Address', value: '001A2B3C4D5E' },
-        { type: 'Mac Address', value: '001A2B3C4D5F' },
-        { type: 'Serial Number', value: 'SN12345678' },
-        { type: 'Account ID', value: 'ACC987654' },
+        { type: 'Mac Address', value: '001A2B3C4D5E', partnerId: 'partner1' },
+        { type: 'Mac Address', value: '001A2B3C4D5F', partnerId: 'partner2' },
+        { type: 'Serial Number', value: 'SN12345678', partnerId: 'partner1' },
+        { type: 'Account ID', value: 'ACC987654', partnerId: 'partner3' },
+        { type: 'Mac Address', value: 'AA1B2C3D4E5F', partnerId: 'partner2' },
+        { type: 'Serial Number', value: 'SN87654321', partnerId: 'partner3' },
+        { type: 'Account ID', value: 'ACC456789', partnerId: 'partner1' },
       ];
-      this.results = mockResults.filter((result) =>
+
+      // Filter by query
+      let filteredResults = mockResults.filter((result) =>
         result.value.toLowerCase().includes(this.query.toLowerCase())
       );
+
+      // Filter by loggedInPartnerId
+      if (this.loggedInPartnerId) {
+        filteredResults = filteredResults.filter(
+          (result) => result.partnerId === this.loggedInPartnerId
+        );
+      }
+
+      this.results = filteredResults;
     },
     debouncedSearch() {
       clearTimeout(this.debounceTimeout);
