@@ -37,24 +37,68 @@ export default {
       partnerId: '',
       role: 'support',
       error: '',
+      users: [
+        {
+          username: "adminUser",
+          partnerIds: ["partner1", "partner2"],
+          role: "admin"
+        },
+        {
+          username: "testUser",
+          partnerIds: ["partner3"],
+          role: "tester"
+        },
+        {
+          username: "supportUser",
+          partnerIds: ["partner1"],
+          role: "support"
+        },
+        {
+          username: "superAdminUser",
+          partnerIds: ["partner1", "partner2", "partner3", "partner4"],
+          role: "super admin"
+        }
+      ]
     };
   },
   methods: {
     handleLogin() {
+      // Existing validations for required fields
       if (!this.username || !this.partnerId || !this.role) {
         this.error = 'All fields are required.';
         return;
       }
+
+      // Existing username format validation
       if (!/^[a-zA-Z0-9]{3,20}$/.test(this.username)) {
         this.error = 'Username must be alphanumeric and between 3-20 characters.';
         return;
       }
-      this.error = '';
-      this.$emit('login-success', {
-        username: this.username,
-        partnerId: this.partnerId,
-        role: this.role,
-      });
+
+      const user = this.users.find(u => u.username === this.username);
+
+      if (user) {
+        // Validate selected partnerId and role against the found user's data
+        if (!user.partnerIds.includes(this.partnerId)) {
+          this.error = 'Invalid Partner ID for this user.';
+          return;
+        }
+        if (user.role !== this.role) {
+          this.error = 'Invalid Role for this user.';
+          return;
+        }
+
+        // Emit login-success with found user's details
+        this.error = '';
+        this.$emit('login-success', {
+          username: user.username,
+          partnerId: this.partnerId, // Use the selected partnerId
+          role: user.role,
+        });
+      } else {
+        // If no user is found
+        this.error = 'Invalid username or password.';
+      }
     },
   },
 };
