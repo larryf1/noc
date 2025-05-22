@@ -2,11 +2,10 @@
   <div id="search-page">
     <h2>Search</h2>
     <input
-      type="text"
-      id="search-box"
-      v-model="query"
-      placeholder="Search..."
-      @input="debouncedSearch"
+        type="text"
+        id="search-box"
+        v-model="query"
+        placeholder="Search..."
     />
     <button @click="handleSearch">Search</button>
     <ul id="search-results">
@@ -28,7 +27,6 @@ export default {
     return {
       query: '',
       results: [],
-      debounceTimeout: null,
     };
   },
   methods: {
@@ -49,23 +47,17 @@ export default {
 
       // Filter by query
       let filteredResults = mockResults.filter((result) =>
-        result.value.toLowerCase().includes(this.query.toLowerCase())
+          result.value.toLowerCase().includes(this.query.toLowerCase())
       );
 
       // Filter by loggedInPartnerId
       if (this.loggedInPartnerId) {
         filteredResults = filteredResults.filter(
-          (result) => result.partnerId === this.loggedInPartnerId
+            (result) => result.partnerId === this.loggedInPartnerId
         );
       }
 
       this.results = filteredResults;
-    },
-    debouncedSearch() {
-      clearTimeout(this.debounceTimeout);
-      this.debounceTimeout = setTimeout(() => {
-        this.handleSearch();
-      }, 300);
     },
   },
 };

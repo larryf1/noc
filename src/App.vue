@@ -1,7 +1,17 @@
 <template>
   <div id="app">
     <header>
-      <h1>AI NOC</h1>
+      <div id="logo">
+        <img src="/favicon.ico" alt="Logo" style="height:36px;margin-right:12px;vertical-align:middle;" />
+        AI NOC
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Internet</a>
+        <a href="#">Support</a>
+        <a href="#">Contact</a>
+        <button class="cta-btn">Shop Offers</button>
+      </nav>
       <div id="user-dropdown" v-if="isLoggedIn">
         <span id="logged-in-user">Logged in as: {{ username }}</span>
         <select id="user-details-dropdown">
@@ -13,12 +23,14 @@
     </header>
 
     <main>
-      <LoginPage v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
-      <SearchPage v-else :logged-in-partner-id="partnerId" />
+      <div class="section-card">
+        <LoginPage v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
+        <SearchPage v-else :logged-in-partner-id="partnerId" />
+      </div>
     </main>
 
     <footer>
-      <p>Version 1.0.0</p>
+      <p>Version 1.0.0 &nbsp;|&nbsp; <a href="#" style="color:#00bfae;text-decoration:none;">Privacy Policy</a> &nbsp;|&nbsp; <a href="#" style="color:#00bfae;text-decoration:none;">Terms of Service</a></p>
     </footer>
   </div>
 </template>
