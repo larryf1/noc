@@ -7,8 +7,6 @@
       :roles="userInfo?.roles"
       :selectedPartnerId="selectedPartnerId"
       :selectedRole="selectedRole"
-      @update-partner="onPartnerChange"
-      @update-role="onRoleChange"
       @logout="logout"
       @go-home="showSearchPage"
     />
@@ -63,18 +61,11 @@ export default {
     },
     logout() {
       ssoLogout()
-      // Ensure state is reset and LoginPage is shown
       this.isAuthenticated = false
       this.userInfo = null
       this.selectedPartnerId = ''
       this.selectedRole = ''
       this.showSearch = true
-    },
-    onPartnerChange(partnerId) {
-      this.selectedPartnerId = partnerId
-    },
-    onRoleChange(role) {
-      this.selectedRole = role
     },
     showSearchPage() {
       this.showSearch = true
@@ -87,7 +78,7 @@ export default {
 header {
   background: linear-gradient(90deg, #ff0066 0%, #a259ff 50%, #00dbff 100%);
   color: #fff;
-  padding: 5px 10px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,12 +86,12 @@ header {
   top: 0;
   width: 100%;
   z-index: 1000;
-  height: 35px;
+  height: 25px;
 }
 
 main {
   flex: 1;
-  padding: 50px 20px 20px;
+  padding: 35px 20px 20px;
   overflow-y: auto;
 }
 
