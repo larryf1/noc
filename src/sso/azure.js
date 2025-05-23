@@ -15,7 +15,7 @@ const msalConfig = {
 const msalInstance = isLocal ? null : new msal.PublicClientApplication(msalConfig)
 
 const MOCK_USER = {
-  username: 'localuser@example.com',
+  username: localStorage.getItem('mock_sso_username') || 'localuser@example.com',
   name: 'Local Dev User',
   partnerIds: ['partner1', 'partner2'],
   roles: ['admin', 'user'],
@@ -24,7 +24,7 @@ const MOCK_USER = {
 
 export async function login() {
   if (isLocal) {
-    localStorage.setItem('mock_sso', '1')
+    // Prompt handled in LoginPage.vue, just return
     return
   }
   try {
@@ -58,7 +58,11 @@ export function isAuthenticated() {
 
 export function getUserInfo() {
   if (isLocal) {
-    return MOCK_USER
+    // Always get the latest username from localStorage if present
+    return {
+      ...MOCK_USER,
+      username: localStorage.getItem('mock_sso_username') || MOCK_USER.username
+    }
   }
   const account = msalInstance.getAllAccounts()[0]
   if (!account) return null
@@ -76,6 +80,7 @@ export function getUserInfo() {
 export function logout() {
   if (isLocal) {
     localStorage.removeItem('mock_sso')
+    localStorage.removeItem('mock_sso_username')
     return
   }
   msalInstance.logoutRedirect()

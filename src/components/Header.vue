@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="app-title">AI NOC</div>
+    <div class="app-title" @click="goHome" style="cursor:pointer;">AI NOC</div>
     <div v-if="username" class="user-info">
       <span class="username" @click="toggleDropdown">{{ username }}</span>
       <div v-if="showDropdown" class="dropdown-popup" @mouseleave="showDropdown = false">
@@ -40,6 +40,10 @@ export default {
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
+    },
+    goHome() {
+      // Emit a custom event to parent to show the search page
+      this.$emit('go-home')
     }
   }
 }
@@ -47,8 +51,8 @@ export default {
 
 <style scoped>
 .header {
-  background-color: #333;
-  color: white;
+  background: linear-gradient(90deg, #ff0066 0%, #a259ff 50%, #00dbff 100%);
+  color: #fff;
   padding: 5px 10px;
   display: flex;
   justify-content: space-between;
@@ -57,7 +61,16 @@ export default {
   top: 0;
   width: 100%;
   z-index: 1000;
-  height: 35px;
+  height: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.app-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 8px #a259ff44;
+  cursor: pointer;
 }
 
 .user-info {
@@ -71,46 +84,59 @@ export default {
   font-weight: bold;
   cursor: pointer;
   position: relative;
+  color: #fff;
+  transition: color 0.2s;
+}
+.username:hover {
+  color: #ffb6e6;
 }
 
 .dropdown-popup {
   position: absolute;
-  top: 30px;
+  top: 35px;
   right: 80px;
-  background: #222;
+  background: linear-gradient(135deg, #a259ff 0%, #00dbff 100%);
   color: #fff;
-  border: 1px solid #888;
-  border-radius: 4px;
-  padding: 8px 16px;
+  border: 1px solid #ff0066;
+  border-radius: 8px;
+  padding: 12px 20px;
   z-index: 2000;
-  min-width: 140px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  min-width: 160px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  animation: fadeIn 0.2s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
 }
 
 .dropdown-popup ul {
   margin: 0 0 8px 0;
-  padding: 0 0 0 16px;
+  padding: 0 0 0 18px;
   list-style: disc;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .dropdown-popup strong {
-  font-size: 13px;
+  font-size: 14px;
+  color: #ffb6e6;
 }
 
 .logout-btn {
   margin-left: 12px;
-  padding: 3px 12px;
-  background: #444;
+  padding: 5px 16px;
+  background: linear-gradient(90deg, #ff0066 0%, #a259ff 100%);
   color: #fff;
   border: none;
-  border-radius: 3px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 13px;
-  transition: background 0.2s;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px #a259ff33;
+  transition: background 0.2s, color 0.2s;
 }
-
 .logout-btn:hover {
-  background: #666;
+  background: linear-gradient(90deg, #a259ff 0%, #ff0066 100%);
+  color: #fff;
 }
 </style>

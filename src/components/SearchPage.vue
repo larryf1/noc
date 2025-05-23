@@ -77,10 +77,37 @@ export default {
 <style scoped>
 #search-page {
   margin: 20px;
+  background: linear-gradient(90deg, #fff 60%, #a259ff22 100%);
+  border-radius: 12px;
+  padding: 24px 32px;
+  box-shadow: 0 2px 12px #a259ff11;
 }
 .searching {
   margin: 10px 0;
-  color: #888;
+  color: #ff0066;
   font-style: italic;
+  font-weight: bold;
+}
+input[type="text"] {
+  border: 1px solid #a259ff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-right: 8px;
+  font-size: 15px;
+}
+button {
+  background: linear-gradient(90deg, #ff0066 0%, #a259ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 2px 8px #a259ff33;
+  transition: background 0.2s, color 0.2s;
+}
+button:hover {
+  background: linear-gradient(90deg, #a259ff 0%, #ff0066 100%);
+  color: #fff;
 }
 </style>

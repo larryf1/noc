@@ -10,6 +10,7 @@
       @update-partner="onPartnerChange"
       @update-role="onRoleChange"
       @logout="logout"
+      @go-home="showSearchPage"
     />
     <main>
       <LoginPage v-if="!isAuthenticated" @mock-login-success="updateAuthState" />
@@ -17,6 +18,7 @@
         v-else
         :loggedInPartnerId="selectedPartnerId"
         :loggedInRole="selectedRole"
+        v-show="showSearch"
       />
     </main>
     <AppFooter />
@@ -38,7 +40,8 @@ export default {
       isAuthenticated: false,
       userInfo: null,
       selectedPartnerId: '',
-      selectedRole: ''
+      selectedRole: '',
+      showSearch: true
     }
   },
   async created() {
@@ -56,6 +59,7 @@ export default {
         this.selectedPartnerId = ''
         this.selectedRole = ''
       }
+      this.showSearch = true
     },
     logout() {
       ssoLogout()
@@ -64,12 +68,16 @@ export default {
       this.userInfo = null
       this.selectedPartnerId = ''
       this.selectedRole = ''
+      this.showSearch = true
     },
     onPartnerChange(partnerId) {
       this.selectedPartnerId = partnerId
     },
     onRoleChange(role) {
       this.selectedRole = role
+    },
+    showSearchPage() {
+      this.showSearch = true
     }
   }
 }
@@ -77,8 +85,8 @@ export default {
 
 <style scoped>
 header {
-  background-color: #333;
-  color: white;
+  background: linear-gradient(90deg, #ff0066 0%, #a259ff 50%, #00dbff 100%);
+  color: #fff;
   padding: 5px 10px;
   display: flex;
   justify-content: space-between;
@@ -92,19 +100,21 @@ header {
 
 main {
   flex: 1;
-  padding: 45px 20px 20px;
+  padding: 50px 20px 20px;
   overflow-y: auto;
 }
 
 footer {
-  background-color: #333;
-  color: white;
+  background: linear-gradient(90deg, #a259ff 0%, #00dbff 100%);
+  color: #fff;
   text-align: center;
-  padding: 5px 10px;
+  padding: 0 10px;
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 25px;
+  height: 15px;
   font-size: 10px;
+  box-shadow: 0 -2px 8px #a259ff33;
+  line-height: 15px;
 }
 </style>
