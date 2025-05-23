@@ -5,11 +5,19 @@
       :username="userInfo?.username"
       :partnerIds="userInfo?.partnerIds"
       :roles="userInfo?.roles"
+      :selectedPartnerId="selectedPartnerId"
+      :selectedRole="selectedRole"
+      @update-partner="onPartnerChange"
+      @update-role="onRoleChange"
       @logout="logout"
     />
     <main>
-      <LoginPage v-if="!isAuthenticated" />
-      <SearchPage v-else />
+      <LoginPage v-if="!isAuthenticated" @mock-login-success="updateAuthState" />
+      <SearchPage
+        v-else
+        :loggedInPartnerId="selectedPartnerId"
+        :loggedInRole="selectedRole"
+      />
     </main>
     <AppFooter />
   </div>
@@ -20,7 +28,7 @@ import AppHeader from './components/Header.vue'
 import AppFooter from './components/Footer.vue'
 import LoginPage from './components/LoginPage.vue'
 import SearchPage from './components/SearchPage.vue'
-import { handleRedirect, isAuthenticated, getUserInfo, logout } from './sso/azure'
+import { handleRedirect, isAuthenticated, getUserInfo, logout as ssoLogout } from './sso/azure'
 
 export default {
   name: 'App',
@@ -28,7 +36,9 @@ export default {
   data() {
     return {
       isAuthenticated: false,
-      userInfo: null
+      userInfo: null,
+      selectedPartnerId: '',
+      selectedRole: ''
     }
   },
   async created() {
@@ -39,9 +49,27 @@ export default {
     updateAuthState() {
       this.isAuthenticated = isAuthenticated()
       this.userInfo = this.isAuthenticated ? getUserInfo() : null
+      if (this.userInfo) {
+        this.selectedPartnerId = this.userInfo.partnerIds?.[0] || ''
+        this.selectedRole = this.userInfo.roles?.[0] || ''
+      } else {
+        this.selectedPartnerId = ''
+        this.selectedRole = ''
+      }
     },
     logout() {
-      logout()
+      ssoLogout()
+      // Ensure state is reset and LoginPage is shown
+      this.isAuthenticated = false
+      this.userInfo = null
+      this.selectedPartnerId = ''
+      this.selectedRole = ''
+    },
+    onPartnerChange(partnerId) {
+      this.selectedPartnerId = partnerId
+    },
+    onRoleChange(role) {
+      this.selectedRole = role
     }
   }
 }
@@ -77,6 +105,6 @@ footer {
   bottom: 0;
   width: 100%;
   height: 25px;
-  font-size: 10px; /* Added to make the font size smaller */
+  font-size: 10px;
 }
 </style>

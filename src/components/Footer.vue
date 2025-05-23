@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <span>AI NOC &copy; 2024</span>
+    <span>AI NOC &copy; 2025</span>
   </footer>
 </template>
 

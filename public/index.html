@@ -5,60 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI NOC</title>
   <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
+  <!-- Remove script.js if not needed for Vue SPA -->
 </head>
 <body>
-  <header>
-    <h1>AI NOC</h1>
-    <div id="user-dropdown" style="display: none;">
-      <span id="logged-in-user"></span>
-      <select id="user-details-dropdown">
-        <option value="" disabled selected>Select details</option>
-        <!-- Populated dynamically -->
-      </select>
-      <button id="logout-button">Logout</button>
-    </div>
-  </header>
-
-  <main>
-    <div id="login-page">
-      <h2>Login</h2>
-      <form id="login-form">
-        <label for="username">Username: <span style="color: red;">*</span></label>
-        <input type="text" id="username" placeholder="Enter username" required>
-        
-        <label for="partnerId">Partner ID: <span style="color: red;">*</span></label>
-        <select id="partnerId" required>
-          <option value="" disabled selected>Select a partner ID</option>
-          <option value="partner1">partner1</option>
-          <option value="partner2">partner2</option>
-          <option value="partner3">partner3</option>
-          <option value="partner4">partner4</option>
-        </select>
-        
-        <label for="role">Role: <span style="color: red;">*</span></label>
-        <select id="role" required>
-          <option value="support" selected>support</option>
-          <option value="admin">admin</option>
-          <option value="super admin">super admin</option>
-          <option value="tester">tester</option>
-        </select>
-        
-        <button type="submit">Login</button>
-      </form>
-      <p id="login-error" style="color: red;"></p>
-    </div>
-
-    <div id="search-page" style="display: none;">
-      <h2>Search</h2>
-      <input type="text" id="search-box" placeholder="Search..." />
-      <button id="search-button">Search</button>
-      <ul id="search-results"></ul>
-    </div>
-  </main>
-
-  <footer>
-    <p>Version 1.0.0</p>
-  </footer>
+  <div id="app"></div>
 </body>
 </html>

@@ -20,6 +20,10 @@ export default {
     async loginWithMicrosoft() {
       try {
         await login()
+        // If running on localhost, immediately notify parent to update auth state
+        if (window.location.hostname === 'localhost') {
+          this.$emit('mock-login-success')
+        }
       } catch (e) {
         this.error = e.message || 'Login failed'
       }
