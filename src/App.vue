@@ -1,73 +1,50 @@
 <template>
   <div id="app">
-    <header>
-      <div id="logo">
-        <img src="/favicon.ico" alt="Logo" style="height:36px;margin-right:12px;vertical-align:middle;" />
-        AI NOC
-      </div>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">Internet</a>
-        <a href="#">Support</a>
-        <a href="#">Contact</a>
-        <button class="cta-btn">Shop Offers</button>
-      </nav>
-      <div id="user-dropdown" v-if="isLoggedIn">
-        <span id="logged-in-user">Logged in as: {{ username }}</span>
-        <select id="user-details-dropdown">
-          <option :value="`Partner ID: ${partnerId}`">Partner ID: {{ partnerId }}</option>
-          <option :value="`Role: ${role}`">Role: {{ role }}</option>
-        </select>
-        <button id="logout-button" @click="logout">Logout</button>
-      </div>
-    </header>
-
+    <AppHeader
+      v-if="isAuthenticated"
+      :username="userInfo?.username"
+      :partnerIds="userInfo?.partnerIds"
+      :roles="userInfo?.roles"
+      @logout="logout"
+    />
     <main>
-      <div class="section-card">
-        <LoginPage v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
-        <SearchPage v-else :logged-in-partner-id="partnerId" />
-      </div>
+      <LoginPage v-if="!isAuthenticated" />
+      <SearchPage v-else />
     </main>
-
-    <footer>
-      <p>Version 1.0.0 &nbsp;|&nbsp; <a href="#" style="color:#00bfae;text-decoration:none;">Privacy Policy</a> &nbsp;|&nbsp; <a href="#" style="color:#00bfae;text-decoration:none;">Terms of Service</a></p>
-    </footer>
+    <AppFooter />
   </div>
 </template>
 
 <script>
-import LoginPage from './components/LoginPage.vue';
-import SearchPage from './components/SearchPage.vue';
+import AppHeader from './components/Header.vue'
+import AppFooter from './components/Footer.vue'
+import LoginPage from './components/LoginPage.vue'
+import SearchPage from './components/SearchPage.vue'
+import { handleRedirect, isAuthenticated, getUserInfo, logout } from './sso/azure'
 
 export default {
   name: 'App',
-  components: {
-    LoginPage,
-    SearchPage,
-  },
+  components: { AppHeader, AppFooter, LoginPage, SearchPage },
   data() {
     return {
-      isLoggedIn: false,
-      username: '',
-      partnerId: '',
-      role: '',
-    };
+      isAuthenticated: false,
+      userInfo: null
+    }
+  },
+  async created() {
+    await handleRedirect()
+    this.updateAuthState()
   },
   methods: {
-    handleLoginSuccess({ username, partnerId, role }) {
-      this.isLoggedIn = true;
-      this.username = username;
-      this.partnerId = partnerId;
-      this.role = role;
+    updateAuthState() {
+      this.isAuthenticated = isAuthenticated()
+      this.userInfo = this.isAuthenticated ? getUserInfo() : null
     },
     logout() {
-      this.isLoggedIn = false;
-      this.username = '';
-      this.partnerId = '';
-      this.role = '';
-    },
-  },
-};
+      logout()
+    }
+  }
+}
 </script>
 
 <style scoped>

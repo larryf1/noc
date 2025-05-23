@@ -6,11 +6,10 @@ The goal is to begin to develop a replacement for an existing application,
 but it is fraught with security challenges and doesn't provide the level
 of partner isolation that is required.
 
-The user of the application can either be logged in or not. If the user is not logged in,
-then display a login page (eventually to be replaced by an SSO solution).
-
-If the user is not logged in, then show the login screen described below.
-Once the user is successfully logged in, then display a search page.
+The user of the application can either be logged in or not.  
+**Authentication and authorization must be handled via SSO using Microsoft Azure as the Identity Provider (IDP).**  
+If the user is not logged in, display a login page that initiates the SSO flow with Azure.  
+Once the user is authenticated via Azure, retrieve their partner IDs and roles from Azure claims or group membership, and display the search page.
 
 There is no server-side component in this implementation. The application will (eventually) communicate with
 other services via REST APIs, but for now, the application will be a single-page application written in JavaScript.
@@ -20,7 +19,8 @@ The application will be a single-page application (SPA) written in JavaScript, u
 The application should be responsive and work on both desktop and mobile devices.
 
 The application should be designed with the following principles in mind:
-- **Security**: The application should be designed with security in mind, including input validation, authentication, and authorization.
+- **Security**: The application should be designed with security in mind, including input validation, authentication, and authorization.  
+  **Authentication and authorization must leverage Microsoft Azure SSO modules.**
 - **Usability**: The application should be easy to use and navigate, with clear error messages and validation.
 - **Performance**: The application should be designed for performance, with fast load times and minimal latency.
 - **Scalability**: The application should be designed to scale, with the ability to handle large amounts of data and users.
@@ -37,53 +37,24 @@ top of the page.
 
 Below the header, there should be a main content area that will display the login page or the search page, depending on whether the user is logged in or not.
 
-There should also be a dropdown menu in the header that allows the user to select their partner ID and role. This dropdown should be populated with the partner IDs and roles from the login page. The selected partner ID and role should be displayed in the header, along with the username of the logged-in user.
+There should also be a dropdown menu in the header that allows the user to select their partner ID and role.  
+**This dropdown should be populated with the partner IDs and roles retrieved from Azure after successful authentication.**  
+The selected partner ID and role should be displayed in the header, along with the username of the logged-in user.
 
-Once the user is logged in, there should be a logout button in the header that allows the user to log out. When the user logs out, the application should redirect to the login page.
+Once the user is logged in, there should be a logout button in the header that allows the user to log out. When the user logs out, the application should redirect to the login page and clear the Azure session.
 
-# Login page
+# Login page (SSO with Azure)
 
-The login page should have the following fields:
-- **Username**
-    - Required field.
-    - Must be alphanumeric and between 3–20 characters.
-    - Indicate on the UI that this is a required field
-    
-- **PartnerIds**
-    - This should be a list of partner ids from the inventory database. 
-    - Examples:
-        - partner1
-        - partner2
-        - partner3
-        - partner4
-    - Required field.
-    - Implement as a dropdown or multi-select box.
+The login page should:
+- Display a "Login with Microsoft" button.
+- Initiate the SSO authentication flow with Microsoft Azure when clicked.
+- After successful authentication, retrieve the user's partner IDs and roles from Azure claims or group membership.
+- Display error messages for failed authentication or missing required claims.
+- Redirect to the search page upon successful login.
 
-- **Roles**
-    - support - basic read access to all areas
-    - admin - read/write access to all areas
-    - super admin - read/write access to all areas and the ability to add new users
-    - tester - read/write to all areas based on the device selected
-    - Required field.
-    - Only allow one role to be selected at a time
-    - Implement as a dropdown or single-select box.
-    - The default value should be "support" for the initial implementation.
-
-These can be hardcoded pick lists for now. Eventually, we will plan to replace it
-with a call to an SSO authority which will provide the partner(s) and roles assigned to the user. 
-During the initial implementation, this can be a simple hardcoded list of users and their roles.
-
-The login page should also have:
-- A button to "login."
-- Basic validation for required fields (e.g., username, partner id, and role must be selected).
-- Display error messages for invalid inputs (e.g., "Username is required," "Invalid partner ID").
-
-When the login button is clicked, the application should:
-1. Validate the input fields.
-2. Log that the user has been successfully logged in.
-3. Show the logged-in user on the top right side of the page.
-4. Display the search page.
-
+**Note:**  
+- Username, partner IDs, and roles are no longer entered manually.  
+- All user information is retrieved from Azure after authentication.
 
 # Search page
 
@@ -101,7 +72,7 @@ The user needs to be able to search for the following:
 The search functionality should include:
 - Type-ahead search to display possible results as the user types.
 - Search results are limited based on the following:
-    - **Partner IDs**: A search should only return possible results for one of the partner ids from the user login page.
+    - **Partner IDs**: A search should only return possible results for one of the partner ids from the user's Azure claims.
     - **Roles**: For example, testers have elevated access to all test accounts, but not production accounts.
 
 After the user selects a location (based on the device), the application should display:
@@ -112,25 +83,9 @@ After the user selects a location (based on the device), the application should 
 
 # Implementation Notes
 
-- Use hardcoded data for the initial implementation:
-    - Partner IDs, roles, and users can be stored in a simple JSON or JavaScript object.
-    - Example hardcoded user data:
-      ```json
-      {
-        "users": [
-          {
-            "username": "adminUser",
-            "partnerIds": ["partner1", "partner2"],
-            "role": "admin"
-          },
-          {
-            "username": "testUser",
-            "partnerIds": ["partner3"],
-            "role": "tester"
-          }
-        ]
-      }
-      ```
-    - Search results can be mocked with a static dataset.
+- Use Microsoft Azure SSO modules for authentication and authorization.
+- After login, retrieve user claims (partner IDs, roles, username) from Azure.
+- Search results can be mocked with a static dataset for now.
 - The topology map can be a placeholder for now, with a simple diagram or static image representing the device and its connections.
 - Ensure the UI is responsive and user-friendly, with clear error messages for invalid inputs.
+
