@@ -30,6 +30,20 @@ jobs:
     - name: Lint
       run: npm run lint
     - name: Test with coverage
-      run: npm test -- --coverage
+      run: npm test -- --coverage --coverageReporters=json-summary
+    - name: Report coverage summary
+      run: |
+        node -e "
+          const s = require('./coverage/coverage-summary.json').total;
+          const rows = [
+            ['Statements', s.statements.pct],
+            ['Branches', s.branches.pct],
+            ['Functions', s.functions.pct],
+            ['Lines', s.lines.pct]
+          ];
+          const md = '## Code Coverage\\n\\n| Metric | Coverage |\\n|---|---|\\n' +
+            rows.map(r => '| ' + r[0] + ' | ' + r[1] + '% |').join('\\n');
+          require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
+        "
     - name: Build
       run: npm run build --if-present
