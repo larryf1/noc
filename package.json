@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "jest"
   },
   "dependencies": {
     "@achrinza/node-ipc": "^10.1.11",
@@ -22,17 +23,27 @@
     "@vue/cli-plugin-babel": "^5.0.0",
     "@vue/cli-plugin-eslint": "^5.0.0",
     "@vue/cli-service": "^5.0.0",
+    "@vue/compiler-sfc": "^3.4.21",
     "@vue/test-utils": "^2.4.4",
-    "babel-jest": "^26.6.0",
+    "@vue/vue3-jest": "^29.2.6",
+    "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.22.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "vue-jest": "^5.0.0-alpha.10",
-    "@vue/compiler-sfc": "^3.4.21"
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   },
   "overrides": {
     "js-beautify": {
       "glob": "10.5.0"
+    },
+    "yorkie": {
+      "execa": {
+        "cross-spawn": "6.0.6"
+      }
+    },
+    "serialize-javascript": "7.1.0",
+    "editorconfig": {
+      "minimatch": "9.0.8"
     }
   },
   "eslintConfig": {
@@ -47,7 +58,17 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "tests/**/*.js"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",
@@ -56,10 +77,11 @@
   ],
   "jest": {
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@vue/test-utils$": "<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.cjs.js"
     },
     "transform": {
-      "^.+\\.vue$": "vue-jest",
+      "^.+\\.vue$": "@vue/vue3-jest",
       "^.+\\.js$": "babel-jest"
     },
     "testEnvironment": "jsdom"

@@ -1,19 +1,18 @@
 import { mount } from '@vue/test-utils';
 import SearchPage from '@/components/SearchPage.vue';
 
-// Helper to create a promise-based nextTick
-const nextTick = () => new Promise(resolve => setTimeout(resolve, 0));
-
 describe('SearchPage.vue', () => {
   // Mock console.warn to avoid noise from Vue Test Utils about default values for props not being set
   let originalWarn;
   beforeAll(() => {
     originalWarn = console.warn;
     console.warn = jest.fn();
+    jest.useFakeTimers();
   });
 
   afterAll(() => {
     console.warn = originalWarn;
+    jest.useRealTimers();
   });
 
   it('filters search results by loggedInPartnerId and query', async () => {
@@ -45,7 +44,7 @@ describe('SearchPage.vue', () => {
 
     // 3. Simulate button click
     await wrapper.find('button').trigger('click');
-    await nextTick(); // Wait for any reactive updates
+    jest.advanceTimersByTime(600); // Advance past the simulated async search delay
 
     // 4. Assertions on wrapper.vm.results
     const results = wrapper.vm.results;
@@ -65,7 +64,7 @@ describe('SearchPage.vue', () => {
     // Test with another query to ensure filtering works correctly
     await wrapper.setData({ query: 'SN123' });
     await wrapper.find('button').trigger('click');
-    await nextTick();
+    jest.advanceTimersByTime(600);
 
     const resultsSN = wrapper.vm.results;
     expect(resultsSN.length).toBe(1);
@@ -81,7 +80,7 @@ describe('SearchPage.vue', () => {
     // Test with a query that matches no items for 'partner1'
     await wrapper.setData({ query: '001A2B3C4D5F' }); // This item belongs to partner2
     await wrapper.find('button').trigger('click');
-    await nextTick();
+    jest.advanceTimersByTime(600);
     expect(wrapper.vm.results.length).toBe(0);
 
     // Test with a query that matches an item for 'partner1' but also for other partners
@@ -89,7 +88,7 @@ describe('SearchPage.vue', () => {
     // Let's assume the query is '001A'
     await wrapper.setData({ query: '001A' });
     await wrapper.find('button').trigger('click');
-    await nextTick();
+    jest.advanceTimersByTime(600);
     const results001A = wrapper.vm.results;
     expect(results001A.length).toBe(1);
     expect(results001A[0]).toEqual(expect.objectContaining({
@@ -108,7 +107,6 @@ describe('SearchPage.vue', () => {
     });
     await wrapper.setData({ query: 'ab' });
     await wrapper.find('button').trigger('click');
-    await nextTick();
     expect(wrapper.vm.results.length).toBe(1);
     expect(wrapper.vm.results[0]).toEqual({ type: 'Error', value: 'Enter at least 3 characters to search.' });
   });
