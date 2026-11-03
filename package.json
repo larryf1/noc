@@ -12,7 +12,7 @@
     "@achrinza/node-ipc": "^10.1.11",
     "@azure/msal-browser": "^2.39.0",
     "core-js": "^3.6.5",
-    "vue": "^3.4.21"
+    "vue": "^3.5.44"
   },
   "engines": {
     "node": ">=18.0.0"
